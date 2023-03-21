@@ -1,3 +1,4 @@
+
 import java.awt.Color;
 import java.awt.Graphics;
 
@@ -29,5 +30,4 @@ public class Checkpoint {
     public void setHasCar(boolean hasCar) {
         this.hasCar = hasCar;
     }
-
 }
