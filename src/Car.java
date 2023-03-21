@@ -3,7 +3,7 @@ import java.awt.*;
 
 class Car {
 
-    private Circle circle;
+    private RacingVenue circle;
     private Color color;
     private double speed = 0.0;
     private final int WIDTH = 40;
@@ -11,9 +11,41 @@ class Car {
 
     Image carImg = new ImageIcon("resources/car1.png").getImage();
 
-    public Car(Circle circle, Color color) {
+    public Car(RacingVenue circle, Color color) {
         this.circle = circle;
         this.color = color;
+    }
+
+    public RacingVenue getCircle() {
+        return circle;
+    }
+
+    public void setCircle(RacingVenue circle) {
+        this.circle = circle;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public int getWIDTH() {
+        return WIDTH;
+    }
+
+    public int getHEIGHT() {
+        return HEIGHT;
     }
 
     public void move(double speed) {
@@ -21,8 +53,8 @@ class Car {
     }
 
     public void draw(Graphics g) {
-        int x = (int) (circle.getX() + circle.getRadius() * Math.cos(speed)) - WIDTH/2;
-        int y = (int) (circle.getY() + circle.getRadius() * Math.sin(speed)) - HEIGHT/2;
+        int x = (int) (circle.getXCoord() + circle.getRadius() * Math.cos(speed)) - WIDTH/2;
+        int y = (int) (circle.getYCoord() + circle.getRadius() * Math.sin(speed)) - HEIGHT/2;
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.rotate(speed, x + WIDTH/2, y + HEIGHT/2);
