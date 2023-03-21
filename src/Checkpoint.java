@@ -1,17 +1,33 @@
-// 3/9 - created class, added appropriate attributes/accessors/mutators [AJ]
+
+import java.awt.Color;
+import java.awt.Graphics;
 
 public class Checkpoint {
-    private int locationX;
-    private int locationY;
 
-    public Checkpoint(int x, int y){
-        this.locationX = x;
-        this.locationY = y;
+    private int x;
+    private int y;
+    private int width;
+    private int height;
+    private boolean hasCar;
+
+    public Checkpoint(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.hasCar = false;
     }
 
-    // TODO: add destForWho
+    public void draw(Graphics g) {
+       g.setColor(Color.RED);
+        g.fillRect(x-5, y, width, height);
+    }
 
-    public boolean isCarHere(Car c){
-        if c
+    public boolean hasCar() {
+        return hasCar;
+    }
+
+    public void setHasCar(boolean hasCar) {
+        this.hasCar = hasCar;
     }
 }

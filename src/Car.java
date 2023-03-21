@@ -5,8 +5,6 @@ import java.awt.*;
 class Car {
 
 
-
-
     private final int WIDTH = 40;
     private final int HEIGHT = 20;
     private Checkpoint startPoint;
@@ -84,14 +82,46 @@ class Car {
 
 
 
+    public RacingVenue getCircle() {
+        return circle;
+    }
+
+    public void setCircle(RacingVenue circle) {
+        this.circle = circle;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public int getWIDTH() {
+        return WIDTH;
+    }
+
+    public int getHEIGHT() {
+        return HEIGHT;
+    }
+
     public void move(double speed) {
         this.speed += speed;
     }
 
 
     public void draw(Graphics g) {
-        int x = (int) (circle.getX() + circle.getRadius() * Math.cos(speed)) - WIDTH/2;
-        int y = (int) (circle.getY() + circle.getRadius() * Math.sin(speed)) - HEIGHT/2;
+        int x = (int) (circle.getXCoord() + circle.getRadius() * Math.cos(speed)) - WIDTH/2;
+        int y = (int) (circle.getYCoord() + circle.getRadius() * Math.sin(speed)) - HEIGHT/2;
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.rotate(speed, x + WIDTH/2, y + HEIGHT/2);

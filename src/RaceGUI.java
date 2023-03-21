@@ -10,14 +10,14 @@ public class RaceGUI extends JPanel {
     private int centerX = WINDOW_WIDTH/2;
     private int centerY = WINDOW_HEIGHT/2;
 
-    private Circle circle;
+    private RacingVenue venue;
     private Car car;
 
     public RaceGUI() {
         setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
 
-        circle = new Circle(centerX, centerY, radius);
-        car = new Car(circle, Color.RED);
+        venue = new RacingVenue(centerX, centerY, radius);
+        car = new Car(venue, Color.RED);
 
         Timer timer = new Timer(50, e -> {
             car.move(0.05);
@@ -29,7 +29,7 @@ public class RaceGUI extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        circle.draw(g);
+        venue.paintComponent(g);
         car.draw(g);
     }
 
