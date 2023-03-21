@@ -34,14 +34,16 @@ public class RacingVenue extends JComponent{
 
 	public Checkpoint[] generateCheckpoints(int numPoints) {
 
-		int checkpointDistance = (int) (2 * Math.PI * radius / numPoints);
-
+		double angle = 0;
+		double angleIncrement = 2 * Math.PI / numPoints;
 		checkpoints = new Checkpoint[numPoints];
 		for (int i = 0; i < numPoints; i++) {
-			int checkpointX = x + (int) (radius * Math.cos(i * checkpointDistance / radius));
-			int checkpointY = y + (int) (radius * Math.sin(i * checkpointDistance / radius));
-			checkpoints[i] = new Checkpoint(checkpointX, checkpointY, 15, 15);
+			double checkpointX = x + radius * Math.cos(angle);
+			double checkpointY = y + radius * Math.sin(angle);
+			checkpoints[i] = new Checkpoint((int)checkpointX, (int)checkpointY, 30, 30);
+			angle += angleIncrement;
 		}
+
 		return checkpoints;
 	}
 
