@@ -128,6 +128,16 @@ class Car {
     public void draw(Graphics g) {
         int x = (int) (circle.getXCoord() + circle.getRadius() * Math.cos(speed)) - WIDTH/2;
         int y = (int) (circle.getYCoord() + circle.getRadius() * Math.sin(speed)) - HEIGHT/2;
+        
+        //an attempt to calc the coordinates of the top left corner
+        int tempX = this.WIDTH/2;
+        int tempY = this.HEIGHT/2;
+        
+        this.positionX = (int) (x + (tempX * Math.cos(speed)) - (tempY * Math.sin(speed)));
+        this.positionY = (int) (y + ((tempX * Math.sin(speed)) + (tempY * Math.cos(speed))));
+        //end attempt
+        //I don't think this works, as the rotation makes it more complicated and I don't actually understand the math :P
+        
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.rotate(speed, x + WIDTH/2, y + HEIGHT/2);

@@ -30,6 +30,10 @@ public class RacingVenue extends JComponent{
 	public void moveRace() {
 		for(int i = 0; i < cars.length; i++) {
 			cars[i].move(0.05);
+			//System.out.println(cars[i].getPositionX() + " " + cars[i].getPositionY());
+			for(int j = 0; j < checkpoints.length; j++) {
+				checkpoints[j].hasCar();
+			}
 		}
 	}
 
