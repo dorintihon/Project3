@@ -1,50 +1,26 @@
+import javax.swing.*;
+import java.awt.*;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import javax.swing.SwingUtilities;
+class Checkpoint {
+    private int startX;
+    private int startY;
+    private int endX;
+    private int endY;
 
-public class Checkpoint extends Rectangle{
+    public Checkpoint(int startX, int startY, int endX, int endY) {
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
+    }
 
-    private int x;
-    private int y;
-    private int width;
-    private int height;
-    private boolean hasCar;
-    private Car myCar;
-
-    public Checkpoint(int x, int y, int width, int height, Car car) {
-        this.x = x;
-        this.y = y;
-        this.width = width + 10;
-        this.height = height + 10;
-        this.hasCar = false;
-        myCar = car;
+    public int getEndX() {
+        return endX;
     }
 
     public void draw(Graphics g) {
-       g.setColor(Color.RED);
-        g.fillRect(x-5, y, width - 10, height - 10);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(new ImageIcon("resources/start_flag.png").getImage(), startX, startY - 15, 70, 60, null);
+        g2d.drawImage(new ImageIcon("resources/finish_flag.png").getImage(), endX, endY - 15, 20, 60, null);
     }
-
-    public boolean hasCar() {
-    	if(SwingUtilities.computeIntersection(myCar.getPositionX(), myCar.getPositionY(), myCar.getWIDTH(), myCar.getHEIGHT(), this).getX() != 0) {
-    		hasCar = true;
-    		System.out.println("CAR!");
-    	}
-        return hasCar;
-    }
-
-    public void setHasCar(boolean hasCar) {
-        this.hasCar = hasCar;
-    }
-   
-    @Override
-   public double getWidth() {
-	   return width;
-   }
-   @Override
-   public double getHeight() {
-	   return height;
-   }
 }

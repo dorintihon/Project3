@@ -1,148 +1,102 @@
-// 3/9 - updated class with proper attributes, accessors, and mutators [AJ]
 import javax.swing.*;
 import java.awt.*;
 
 class Car {
+    private int x;
+    private int y;
+    private String color;
+    private String tireType;
+    private int wheelSize;
+    private int speed = 35;
 
-
-    private final int WIDTH = 40;
-    private final int HEIGHT = 20;
-    private Checkpoint startPoint;
-    private Checkpoint endPoint;
-    private int engine;
-    private int tire;
-    private int wheel;
-    private Color color;
-    private double speed = 0.0;
-    private int power;
-    private int positionX;
-    private int positionY;
-    private RacingVenue circle;
-
-    Image carImg = new ImageIcon("car1.png").getImage();
-
-    // constructor with no args
-    public Car(){
-        this.startPoint = null;
-        this.endPoint = null;
-        this.engine = 0;
-        this.tire = 0;
-        this.wheel = 0;
-        this.color = null;
-        this.speed = 0;
-        this.power = 0;
-        this.positionX = 0;
-        this.positionY = 0;
-    }
-    
-    public Car(RacingVenue venue) {
-    	circle = venue;
-    }
-    
-    public Car(RacingVenue venue, Color col, double sp) {
-    	circle = venue;
-    	color = col;
-    	speed = sp;
-    }
-
-    // constructor with args
-    public Car(Checkpoint sta, Checkpoint end, int e, int t, int w, Color color, double sp, int p, int x, int y, RacingVenue venue) {
-        this.startPoint = sta;
-        this.endPoint = end;
-        this.engine = e;
-        this.tire = t;
-        this.wheel = w;
+    public Car(String color, String tireType, int wheelSize, int x, int y) {
         this.color = color;
-        this.speed = sp;
-        this.power = p;
-        this.positionX = x;
-        this.positionY = y;
-        this.circle = venue;
-    }
+        this.tireType = tireType;
+        this.wheelSize = wheelSize;
+        this.x = x;
+        this.y = y;
 
-    //  Accessors
-    public Checkpoint getStartPoint(){
-        return this.startPoint;
-    }
-    public Checkpoint getEndPoint(){
-        return this.endPoint;
-    }
-    public int getEngine(){
-        return this.engine;
-    }
-    public int getTire(){
-        return this.tire;
-    }
-    public int getWheel(){
-        return this.wheel;
-    }
-    public Color getColor(){
-        return this.color;
-    }
-    public double getSpeed(){
-        return this.speed;
-    }
-    public int getPower(){
-        return this.power;
-    }
-    public int getPositionX(){
-        return this.positionX;
-    }
-    public int getPositionY(){
-        return this.positionY;
-    }
+        int speedReductionByWheel = 0;
+        if (wheelSize == 17) {
+            speedReductionByWheel = 15;
+        } else if (wheelSize == 15) {
+            speedReductionByWheel = 5;
+        }
+
+        int speedReductionByTire = 0;
+
+        if (tireType.equals("winter")) {
+            speedReductionByTire = 10;
+        } else if (tireType.equals("summer")) {
+            speedReductionByTire = 5;
+        }
 
 
-
-    public RacingVenue getCircle() {
-        return circle;
+        this.speed -= speedReductionByWheel + speedReductionByTire;
     }
 
-    public void setCircle(RacingVenue circle) {
-        this.circle = circle;
+    public void move(Checkpoint checkpoint) {
+        if (x < checkpoint.getEndX() + 10) {
+            x += speed;
+        }
     }
 
+    public int getX() {
+        return x;
+    }
 
-    public void setColor(Color color) {
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
         this.color = color;
     }
 
+    public String getTireType() {
+        return tireType;
+    }
 
-    public void setSpeed(double speed) {
+    public void setTireType(String tireType) {
+        this.tireType = tireType;
+    }
+
+    public int getWheelSize() {
+        return wheelSize;
+    }
+
+    public void setWheelSize(int wheelSize) {
+        this.wheelSize = wheelSize;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
         this.speed = speed;
     }
 
-    public int getWIDTH() {
-        return WIDTH;
-    }
-
-    public int getHEIGHT() {
-        return HEIGHT;
-    }
-
-    public void move(double speed) {
-        this.speed += speed;
-    }
-
-
     public void draw(Graphics g) {
-        int x = (int) (circle.getXCoord() + circle.getRadius() * Math.cos(speed)) - WIDTH/2;
-        int y = (int) (circle.getYCoord() + circle.getRadius() * Math.sin(speed)) - HEIGHT/2;
-        
-        //an attempt to calc the coordinates of the top left corner
-        int tempX = this.WIDTH/2;
-        int tempY = this.HEIGHT/2;
-        
-        this.positionX = (int) (x + (tempX * Math.cos(speed)) - (tempY * Math.sin(speed)));
-        this.positionY = (int) (y + ((tempX * Math.sin(speed)) + (tempY * Math.cos(speed))));
-        //end attempt
-        //I don't think this works, as the rotation makes it more complicated and I don't actually understand the math :P
-        
-
         Graphics2D g2d = (Graphics2D) g;
-        g2d.rotate(speed, x + WIDTH/2, y + HEIGHT/2);
-        g2d.drawImage(carImg, x-15, y, WIDTH+25, HEIGHT+50, null);
-        g2d.rotate(-speed, x + WIDTH/2, y + HEIGHT/2);
-    }
+        switch (color) {
+            case "blue" -> g2d.drawImage(new ImageIcon("resources/blue_car.png").getImage(), x, y, 50, 50, null);
+            case "green" -> g2d.drawImage(new ImageIcon("resources/green_car.png").getImage(), x, y, 50, 50, null);
+            case "yellow" -> g2d.drawImage(new ImageIcon("resources/yellow_car.png").getImage(), x, y, 50, 50, null);
+            default -> g.setColor(Color.YELLOW);
+        }
 
+    }
 }
