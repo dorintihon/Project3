@@ -2,6 +2,12 @@
 import javax.swing.*;
 import java.awt.*;
 
+
+/* TODO:         Adjust car class so when a car is created that:
+   TODO:            -It will determine the speed of the car based on the engine/tire/wheel type (adjust power)
+   TODO:            -Add enumeration for car colors to choose the png in dependence of the color
+   TODO:
+ */
 class Car {
 
 
@@ -35,15 +41,78 @@ class Car {
     }
 
     // constructor with args
-    public Car(Checkpoint sta, Checkpoint end, int e, int t, int w, Color color, double sp, int p, int x, int y) {
+    public Car(Checkpoint sta, Checkpoint end, int e, int t, int w, Color color, int x, int y) {
+
+        //  setting start/end points
         this.startPoint = sta;
         this.endPoint = end;
+
+        //  car attributes that affect power/speed
         this.engine = e;
         this.tire = t;
         this.wheel = w;
+
+        //  setting speed and power
+        //  NOTE: Engine/Tire/Wheel calculation
+
+
+        int eSpeed = 0;
+        int tSpeed = 0;
+        int wSpeed = 0;
+
+
+        //  NOTE: Engines can have an index up to 6. For every 2 index levels, a different speed value is set in eSpeed.
+
+        if (e == 1 || e == 2){
+            eSpeed = 5;
+        }
+        if (e == 3 || e == 4){
+            eSpeed = 7;
+        }
+        if (e == 5 || e == 6){
+            eSpeed = 10;
+        }
+
+        //  NOTE: Tires can have an index up to 6. For every 2 index levels, a different speed value is set in tSpeed.
+
+        if (t == 1 || t == 2){
+            tSpeed = 5;
+        }
+        if (t == 3 || t == 4){
+            tSpeed = 7;
+        }
+        if (t == 5 || t == 6){
+            tSpeed = 10;
+        }
+
+        //  NOTE: Wheels can have an index up to 6. For every 2 index levels, a different speed value is set in wSpeed.
+
+        if (w == 1 || w == 2){
+            wSpeed = 5;
+        }
+        if (w == 3 || w == 4){
+            wSpeed = 7;
+        }
+        if (w == 5 || w == 6){
+            wSpeed = 10;
+        }
+
+
+        //  Speed calculation
+        //  NOTE: Speed is evaluated by considering the Engine/Tires/Wheels
+        if(eSpeed == 5 && tSpeed == 5 && wSpeed == 5){
+            this.speed = 5;
+        }
+        if((eSpeed == 5 || eSpeed == 7) && (tSpeed == 5 || tSpeed == 7) && (wSpeed == 5 || wSpeed == 7)){
+            this.speed = 10;
+        }
+        if((eSpeed == 7 || eSpeed == 10) && (tSpeed == 5 || tSpeed == 7) && (wSpeed == 5 || wSpeed == 7)){
+            this.speed = 10;
+        }
+
+
         this.color = color;
-        this.speed = sp;
-        this.power = p;
+        //this.power
         this.positionX = x;
         this.positionY = y;
     }
