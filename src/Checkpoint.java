@@ -1,33 +1,26 @@
-import java.awt.Color;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 
-public class Checkpoint {
+class Checkpoint {
+    private int startX;
+    private int startY;
+    private int endX;
+    private int endY;
 
-    private int x;
-    private int y;
-    private int width;
-    private int height;
-    private boolean hasCar;
+    public Checkpoint(int startX, int startY, int endX, int endY) {
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
+    }
 
-    public Checkpoint(int x, int y, int width, int height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.hasCar = false;
+    public int getEndX() {
+        return endX;
     }
 
     public void draw(Graphics g) {
-       g.setColor(Color.RED);
-        g.fillRect(x-5, y, width, height);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(new ImageIcon("resources/start_flag.png").getImage(), startX, startY - 15, 70, 60, null);
+        g2d.drawImage(new ImageIcon("resources/finish_flag.png").getImage(), endX, endY - 15, 20, 60, null);
     }
-
-    public boolean hasCar() {
-        return hasCar;
-    }
-
-    public void setHasCar(boolean hasCar) {
-        this.hasCar = hasCar;
-    }
-
 }

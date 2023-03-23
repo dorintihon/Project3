@@ -2,63 +2,101 @@ import javax.swing.*;
 import java.awt.*;
 
 class Car {
+    private int x;
+    private int y;
+    private String color;
+    private String tireType;
+    private int wheelSize;
+    private int speed = 35;
 
-    private RacingVenue circle;
-    private Color color;
-    private double speed = 0.0;
-    private final int WIDTH = 40;
-    private final int HEIGHT = 20;
-
-    Image carImg = new ImageIcon("resources/car1.png").getImage();
-
-    public Car(RacingVenue circle, Color color) {
-        this.circle = circle;
+    public Car(String color, String tireType, int wheelSize, int x, int y) {
         this.color = color;
+        this.tireType = tireType;
+        this.wheelSize = wheelSize;
+        this.x = x;
+        this.y = y;
+
+        int speedReductionByWheel = 0;
+        if (wheelSize == 17) {
+            speedReductionByWheel = 15;
+        } else if (wheelSize == 15) {
+            speedReductionByWheel = 5;
+        }
+
+        int speedReductionByTire = 0;
+
+        if (tireType.equals("winter")) {
+            speedReductionByTire = 10;
+        } else if (tireType.equals("summer")) {
+            speedReductionByTire = 5;
+        }
+
+
+        this.speed -= speedReductionByWheel + speedReductionByTire;
     }
 
-    public RacingVenue getCircle() {
-        return circle;
+    public void move(Checkpoint checkpoint) {
+        if (x < checkpoint.getEndX() + 10) {
+            x += speed;
+        }
     }
 
-    public void setCircle(RacingVenue circle) {
-        this.circle = circle;
+    public int getX() {
+        return x;
     }
 
-    public Color getColor() {
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public String getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(String color) {
         this.color = color;
     }
 
-    public double getSpeed() {
+    public String getTireType() {
+        return tireType;
+    }
+
+    public void setTireType(String tireType) {
+        this.tireType = tireType;
+    }
+
+    public int getWheelSize() {
+        return wheelSize;
+    }
+
+    public void setWheelSize(int wheelSize) {
+        this.wheelSize = wheelSize;
+    }
+
+    public int getSpeed() {
         return speed;
     }
 
-    public void setSpeed(double speed) {
+    public void setSpeed(int speed) {
         this.speed = speed;
     }
 
-    public int getWIDTH() {
-        return WIDTH;
-    }
-
-    public int getHEIGHT() {
-        return HEIGHT;
-    }
-
-    public void move(double speed) {
-        this.speed += speed;
-    }
-
     public void draw(Graphics g) {
-        int x = (int) (circle.getXCoord() + circle.getRadius() * Math.cos(speed)) - WIDTH/2;
-        int y = (int) (circle.getYCoord() + circle.getRadius() * Math.sin(speed)) - HEIGHT/2;
-
         Graphics2D g2d = (Graphics2D) g;
-        g2d.rotate(speed, x + WIDTH/2, y + HEIGHT/2);
-        g2d.drawImage(carImg, x-15, y, WIDTH+25, HEIGHT+50, null);
-        g2d.rotate(-speed, x + WIDTH/2, y + HEIGHT/2);
+        switch (color) {
+            case "blue" -> g2d.drawImage(new ImageIcon("resources/blue_car.png").getImage(), x, y, 50, 50, null);
+            case "green" -> g2d.drawImage(new ImageIcon("resources/green_car.png").getImage(), x, y, 50, 50, null);
+            case "yellow" -> g2d.drawImage(new ImageIcon("resources/yellow_car.png").getImage(), x, y, 50, 50, null);
+            default -> g.setColor(Color.YELLOW);
+        }
+
     }
 }

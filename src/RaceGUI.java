@@ -1,43 +1,45 @@
 import javax.swing.*;
-import java.awt.*;
+import java.util.Random;
 
-public class RaceGUI extends JPanel {
 
-    private final int WINDOW_WIDTH = 600;
-    private final int WINDOW_HEIGHT = 600;
-
-    private int radius = 150;
-    private int centerX = WINDOW_WIDTH/2;
-    private int centerY = WINDOW_HEIGHT/2;
-
-    private RacingVenue venue;
-    private Car car;
-
-    public RaceGUI() {
-        setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
-
-        venue = new RacingVenue(centerX, centerY, radius);
-        car = new Car(venue, Color.RED);
-
-        Timer timer = new Timer(50, e -> {
-            car.move(0.05);
-            repaint();
-        });
-        timer.start();
-    }
-
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        venue.paintComponent(g);
-        car.draw(g);
-    }
+public class RaceGUI {
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Car Race");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new RaceGUI());
+
+
+        RacingVenue movingRectanglesPanel = new RacingVenue(createCars(getNumberOfCars()));
+
+        frame.add(movingRectanglesPanel);
         frame.pack();
         frame.setVisible(true);
     }
+
+    private static int getNumberOfCars() {
+        int numCars;
+        do {
+            String input = JOptionPane.showInputDialog(null, "Enter the number of cars to race (2 or 3):");
+            numCars = Integer.parseInt(input);
+        } while (numCars < 2 || numCars > 3);
+        return numCars;
+    }
+
+    private static Car[] createCars(int numCars) {
+        Car[] cars = new Car[numCars];
+        Random random = new Random();
+        String[] colors = {"blue", "green", "yellow"};
+        String[] tireTypes = {"summer", "winter"};
+        Integer[] wheelSizes = {15, 17};
+
+        for (int i = 0; i < numCars; i++) {
+            String color = colors[random.nextInt(colors.length)];
+            String tireType = tireTypes[random.nextInt(tireTypes.length)];
+            int wheelSize = wheelSizes[random.nextInt(wheelSizes.length)];
+            cars[i] = new Car(color, tireType, wheelSize, 0, 50 + i * 150);
+        }
+        return cars;
+    }
 }
+
+
