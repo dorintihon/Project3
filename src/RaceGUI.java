@@ -12,11 +12,32 @@ public class RaceGUI {
     }
     
     private JFrame frame;
+    private RacingVenue venue;
+    private long startTime;
 
     public RaceGUI() {
         
       frame = frameBuilder();
+      raceStart();
 
+    }
+    
+    public void raceStart() {
+    	startTime = System.currentTimeMillis();
+    	Timer[] timerHolder = new Timer[1];
+		timerHolder[0] = new Timer(10, e -> {
+			
+			venue.moveRace(startTime);
+
+			if (venue.allCarsFinished()) {
+				timerHolder[0].stop();
+				if(displayRaceResults() == JOptionPane.YES_OPTION) {
+					this.frameBuilder();
+				}
+				
+			}
+		});
+		timerHolder[0].start();
     }
     
     public JFrame frameBuilder() {
@@ -24,19 +45,44 @@ public class RaceGUI {
     	if(this.frame != null) {
     		this.frame.setVisible(false);
     		this.frame.dispose();
+    		venue = null;
     	}
     	 Car[] carConfigurations = getCarConfigurations();
-         RacingVenue racingVenue = new RacingVenue(carConfigurations, this);
+         venue = new RacingVenue(carConfigurations, this);
          
-    	 JFrame frame = new JFrame("Car Race");
+    	 frame = new JFrame("Car Race");
          frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
          
-         frame.add(racingVenue);
+         frame.add(venue);
          frame.pack();
          frame.setVisible(true);
          
+         raceStart();
+         
          return frame;
     }
+   
+    public int displayRaceResults() {
+		StringBuilder results = new StringBuilder("Race results! Click Yes to play again\n");
+		int winningIndex = 0;
+		long bestTime = venue.getCars()[0].getFinishTime();
+
+		for (int i = 0; i < venue.getCars().length; i++) {
+			long timeTaken = venue.getCars()[i].getFinishTime();
+			double timeTakenSeconds = timeTaken / 1000.0;
+			results.append("Car ").append(i + 1).append(": ").append(timeTakenSeconds).append(" s\n");
+			if (timeTaken < bestTime) {
+				winningIndex = i;
+				bestTime = timeTaken;
+			}
+		}
+		results.append("The winner is Car ").append(winningIndex + 1).append("!");
+
+		int choice = JOptionPane.showConfirmDialog(frame, results.toString(), "Race Results", JOptionPane.YES_OPTION);
+		
+		
+		return choice;
+	}
 
     private Car[] getCarConfigurations() {
         int numCars = 0;

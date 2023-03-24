@@ -23,4 +23,27 @@ class Checkpoint {
         g2d.drawImage(new ImageIcon("resources/start_flag.png").getImage(), startX, startY - 15, 70, 60, null);
         g2d.drawImage(new ImageIcon("resources/finish_flag.png").getImage(), endX, endY - 15, 20, 60, null);
     }
+    
+    @Override
+    public String toString() {
+    	String info = "";
+    	
+    	info = info + "This checkpoint's start is at " + startX + ", " + startY;
+    	info = info + "\n This checkpoint's end is at " + endX + ", " + endY;
+    	
+    	return info;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+    	if(obj == this) return true;
+    	if(obj == null) return false;
+    	
+    	if(obj instanceof Checkpoint) {
+    		Checkpoint ch = (Checkpoint) obj;
+    		
+    		return ch.startX == this.startX && ch.endX == this.endX && ch.startY == this.startY && ch.endY == this.endY;
+    	}
+    	return false;
+    }
 }
