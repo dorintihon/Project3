@@ -10,7 +10,7 @@ class RacingVenue extends JPanel {
 	long startTime = System.currentTimeMillis();
 
 
-	public RacingVenue(Car[] carConfigurations) {
+	public RacingVenue(Car[] carConfigurations, RaceGUI gui) {
 		this.cars = carConfigurations;
 		this.checkpoints = new Checkpoint[cars.length];
 		for (int i = 0; i < cars.length; i++) {
@@ -27,14 +27,18 @@ class RacingVenue extends JPanel {
 
 			if (allCarsFinished()) {
 				timerHolder[0].stop();
-				displayRaceResults();
+				if(displayRaceResults() == JOptionPane.YES_OPTION) {
+					gui.frameBuilder();
+				}
 			}
 		});
 		timerHolder[0].start();
 
+
 		setPreferredSize(new Dimension(700, 400));
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 	}
+
 
 	private boolean allCarsFinished() {
 		for (Car car : cars) {
@@ -45,8 +49,8 @@ class RacingVenue extends JPanel {
 		return true;
 	}
 
-	private void displayRaceResults() {
-		StringBuilder results = new StringBuilder("Race results:\n");
+	private int displayRaceResults() {
+		StringBuilder results = new StringBuilder("Race results! Click Yes to play again\n");
 		int winningIndex = 0;
 		long bestTime = cars[0].getFinishTime();
 
@@ -62,7 +66,7 @@ class RacingVenue extends JPanel {
 		}
 		results.append("The winner is Car ").append(winningIndex + 1).append("!");
 
-		JOptionPane.showMessageDialog(null, results.toString(), "Race Results", JOptionPane.INFORMATION_MESSAGE);
+		return JOptionPane.showConfirmDialog(null, results.toString(), "Race Results", JOptionPane.YES_OPTION);
 	}
 
 	@Override

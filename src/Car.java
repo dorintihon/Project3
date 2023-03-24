@@ -30,30 +30,32 @@ class Car {
 
 
     public int speedReductionByEngine(){
-        return switch (engine) {
-            case "4 cyl" -> 4;
-            case "V6" -> 2;
-            case "V8" -> 1;
-            default -> 0;
-        };
+        	switch (engine) {
+            case "4 cyl": return 4;
+            case "V6": return 2;
+            case "V8": return 1;
+            default: return 0;
+        }
+
+
     }
 
     public int speedReductionByWheel(){
-        return switch (wheelSize) {
-            case 20 -> 4;
-            case 17 -> 2;
-            case 15 -> 1;
-            default -> 0;
-        };
+        switch (wheelSize) {
+            case 20: return 4;
+            case 17: return 2;
+            case 15: return 1;
+            default: return 0;
+        }
     }
 
     public int speedReductionByTyre(){
-        return switch (tireType) {
-            case "winter" -> 4;
-            case "summer" -> 2;
-            case "sport" -> 1;
-            default -> 0;
-        };
+         switch (tireType) {
+            case "winter": return 4;
+            case "summer": return 2;
+            case "sport": return 1;
+            default: return 0;
+        }
     }
 
     public void move(Checkpoint checkpoint, long startTime) {
@@ -138,10 +140,10 @@ class Car {
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         switch (color) {
-            case "blue" -> g2d.drawImage(new ImageIcon("resources/blue_car.png").getImage(), x, y, 50, 50, null);
-            case "green" -> g2d.drawImage(new ImageIcon("resources/green_car.png").getImage(), x, y, 50, 50, null);
-            case "yellow" -> g2d.drawImage(new ImageIcon("resources/yellow_car.png").getImage(), x, y, 50, 50, null);
-            default -> g.setColor(Color.YELLOW);
+            case "blue": g2d.drawImage(new ImageIcon("resources/blue_car.png").getImage(), x, y, 50, 50, null);
+            case "green": g2d.drawImage(new ImageIcon("resources/green_car.png").getImage(), x, y, 50, 50, null);
+            case "yellow": g2d.drawImage(new ImageIcon("resources/yellow_car.png").getImage(), x, y, 50, 50, null);
+            default: g.setColor(Color.YELLOW);
         }
 
     }

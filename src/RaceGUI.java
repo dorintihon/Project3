@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
 
 
@@ -9,23 +11,46 @@ public class RaceGUI {
        new RaceGUI();
     }
 
+    private JFrame frame;
+
     public RaceGUI() {
-        JFrame frame = new JFrame("Car Race");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        Car[] carConfigurations = getCarConfigurations();
-        RacingVenue racingVenue = new RacingVenue(carConfigurations);
+      frame = frameBuilder();
 
-        frame.add(racingVenue);
-        frame.pack();
-        frame.setVisible(true);
+    }
+
+    public JFrame frameBuilder() {
+
+    	if(this.frame != null) {
+    		this.frame.setVisible(false);
+    		this.frame.dispose();
+    	}
+    	 Car[] carConfigurations = getCarConfigurations();
+         RacingVenue racingVenue = new RacingVenue(carConfigurations, this);
+
+    	 JFrame frame = new JFrame("Car Race");
+         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+         frame.add(racingVenue);
+         frame.pack();
+         frame.setVisible(true);
+
+         return frame;
     }
 
     private Car[] getCarConfigurations() {
-        int numCars;
+        int numCars = 0;
         do {
-            String input = JOptionPane.showInputDialog(null, "Enter the number of cars to race (2 or 3):");
-            numCars = Integer.parseInt(input);
+
+        	try {
+        		String input = JOptionPane.showInputDialog(null, "Enter the number of cars to race (2 or 3):");
+        		numCars = Integer.parseInt(input);
+        	}
+
+        	catch (NumberFormatException ex){
+        		System.out.println("For some reason, what was entered could not be parsed");
+        	}
+
         } while (numCars < 2 || numCars > 3);
 
         Car[] cars = new Car[numCars];
@@ -94,6 +119,9 @@ public class RaceGUI {
 
         return cars;
     }
+
+
+
 
 }
 
