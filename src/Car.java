@@ -6,39 +6,85 @@ class Car {
     private int y;
     private String color;
     private String tireType;
-    private int wheelSize;
-    private int speed = 35;
 
-    public Car(String color, String tireType, int wheelSize, int x, int y) {
+    private String engine;
+    private int wheelSize;
+    private int speed = 15;
+
+    private boolean finished;
+    private long finishTime;
+
+    public Car(String color, String engine, String tireType, int wheelSize, int x, int y) {
         this.color = color;
+        this.engine = engine;
         this.tireType = tireType;
         this.wheelSize = wheelSize;
         this.x = x;
         this.y = y;
 
-        int speedReductionByWheel = 0;
-        if (wheelSize == 17) {
-            speedReductionByWheel = 15;
-        } else if (wheelSize == 15) {
-            speedReductionByWheel = 5;
-        }
+        this.finished = false;
+        this.finishTime = 0;
 
-        int speedReductionByTire = 0;
-
-        if (tireType.equals("winter")) {
-            speedReductionByTire = 10;
-        } else if (tireType.equals("summer")) {
-            speedReductionByTire = 5;
-        }
-
-
-        this.speed -= speedReductionByWheel + speedReductionByTire;
+        this.speed -= speedReductionByEngine() + speedReductionByTyre() + speedReductionByWheel();
     }
 
-    public void move(Checkpoint checkpoint) {
-        if (x < checkpoint.getEndX() + 10) {
-            x += speed;
+
+    public int speedReductionByEngine(){
+        return switch (engine) {
+            case "4 cyl" -> 4;
+            case "V6" -> 2;
+            case "V8" -> 1;
+            default -> 0;
+        };
+    }
+
+    public int speedReductionByWheel(){
+        return switch (wheelSize) {
+            case 20 -> 4;
+            case 17 -> 2;
+            case 15 -> 1;
+            default -> 0;
+        };
+    }
+
+    public int speedReductionByTyre(){
+        return switch (tireType) {
+            case "winter" -> 4;
+            case "summer" -> 2;
+            case "sport" -> 1;
+            default -> 0;
+        };
+    }
+
+    public void move(Checkpoint checkpoint, long startTime) {
+        if (!finished) {
+            if (x < checkpoint.getEndX() + 10) {
+                x += speed;
+            } else {
+                finish(startTime);
+            }
         }
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    public long getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(long finishTime) {
+        this.finishTime = finishTime;
+    }
+
+    public void finish(long startTime) {
+        this.finished = true;
+        this.finishTime = System.currentTimeMillis() - startTime;
     }
 
     public int getX() {
@@ -98,5 +144,20 @@ class Car {
             default -> g.setColor(Color.YELLOW);
         }
 
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Car car = (Car) obj;
+        return wheelSize == car.wheelSize &&
+                engine.equals(car.engine) &&
+                color.equals(car.color) &&
+                tireType.equals(car.tireType);
     }
 }
