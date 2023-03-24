@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 class RacingVenue extends JPanel {
 
@@ -7,8 +8,8 @@ class RacingVenue extends JPanel {
 	private Car[] cars;
 	private Checkpoint[] checkpoints;
 
-	public RacingVenue(Car[] cars) {
-		this.cars = cars;
+	public RacingVenue(int numCars) {
+		this.cars = createCars(numCars);
 		this.checkpoints = new Checkpoint[cars.length];
 		for (int i = 0; i < cars.length; i++) {
 			checkpoints[i] = new Checkpoint(0, cars[i].getY(), 600, cars[i].getY());
@@ -24,6 +25,22 @@ class RacingVenue extends JPanel {
 
 		setPreferredSize(new Dimension(700, 400));
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+	}
+
+	private Car[] createCars(int numCars) {
+		Car[] cars = new Car[numCars];
+		Random random = new Random();
+		String[] colors = {"blue", "green", "yellow"};
+		String[] tireTypes = {"summer", "winter"};
+		Integer[] wheelSizes = {15, 17};
+
+		for (int i = 0; i < numCars; i++) {
+			String color = colors[random.nextInt(colors.length)];
+			String tireType = tireTypes[random.nextInt(tireTypes.length)];
+			int wheelSize = wheelSizes[random.nextInt(wheelSizes.length)];
+			cars[i] = new Car(color, tireType, wheelSize, 0, 50 + i * 150);
+		}
+		return cars;
 	}
 
 	@Override
