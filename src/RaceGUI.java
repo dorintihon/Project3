@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Random;
 
 
@@ -15,10 +13,11 @@ public class RaceGUI {
     private RacingVenue venue;
     private long startTime;
 
+    private int numCars;
+
     public RaceGUI() {
         
       frame = frameBuilder();
-      raceStart();
 
     }
     
@@ -31,86 +30,147 @@ public class RaceGUI {
 
 			if (venue.allCarsFinished()) {
 				timerHolder[0].stop();
-				if(displayRaceResults() == JOptionPane.YES_OPTION) {
-					this.frameBuilder();
-				}
-				
+                displayRaceResults();
 			}
 		});
 		timerHolder[0].start();
     }
-    
+
     public JFrame frameBuilder() {
-    	
+
     	if(this.frame != null) {
     		this.frame.setVisible(false);
     		this.frame.dispose();
     		venue = null;
     	}
+         getNumberOfCars();
     	 Car[] carConfigurations = getCarConfigurations();
          venue = new RacingVenue(carConfigurations, this);
-         
+
     	 frame = new JFrame("Car Race");
          frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         
+
          frame.add(venue);
+
+        // Create the StartRace button
+        JButton startRaceButton = new JButton("Start Race");
+        startRaceButton.addActionListener(e -> {
+            startRaceButton.setEnabled(false); // Disable the button to avoid clicking it multiple times
+            raceStart();
+        });
+
+        frame.add(startRaceButton, BorderLayout.SOUTH);
          frame.pack();
          frame.setVisible(true);
-         
-         raceStart();
-         
+
+
          return frame;
     }
-   
-    public int displayRaceResults() {
-		StringBuilder results = new StringBuilder("Race results! Click Yes to play again\n");
-		int winningIndex = 0;
-		long bestTime = venue.getCars()[0].getFinishTime();
 
-		for (int i = 0; i < venue.getCars().length; i++) {
-			long timeTaken = venue.getCars()[i].getFinishTime();
-			double timeTakenSeconds = timeTaken / 1000.0;
-			results.append("Car ").append(i + 1).append(": ").append(timeTakenSeconds).append(" s\n");
-			if (timeTaken < bestTime) {
-				winningIndex = i;
-				bestTime = timeTaken;
-			}
-		}
-		results.append("The winner is Car ").append(winningIndex + 1).append("!");
+    public void displayRaceResults() {
+        JFrame resultFrame = new JFrame("Race Results");
+        JPanel resultPanel = new JPanel();
+        resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
 
-		int choice = JOptionPane.showConfirmDialog(frame, results.toString(), "Race Results", JOptionPane.YES_OPTION);
-		
-		
-		return choice;
-	}
+        StringBuilder results = new StringBuilder("Race results!\n");
+        int winningIndex = 0;
+        long bestTime = venue.getCars()[0].getFinishTime();
 
-    private Car[] getCarConfigurations() {
-        int numCars = 0;
+        for (int i = 0; i < venue.getCars().length; i++) {
+            long timeTaken = venue.getCars()[i].getFinishTime();
+            double timeTakenSeconds = timeTaken / 1000.0;
+            results.append("Car ").append(i + 1).append(": ").append(timeTakenSeconds).append(" s\n");
+            if (timeTaken < bestTime) {
+                winningIndex = i;
+                bestTime = timeTaken;
+            }
+        }
+
+        results.append("The winner is Car ").append(winningIndex + 1).append("!\n");
+        results.append(venue.getCars()[winningIndex].toString());
+        results.append("Do you want to play again?");
+
+        JTextArea resultsTextArea = new JTextArea(results.toString());
+        resultsTextArea.setEditable(false);
+        resultPanel.add(resultsTextArea);
+
+        JButton playAgainButton = new JButton("Play Again");
+        JButton quitButton = new JButton("Quit");
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(playAgainButton);
+        buttonPanel.add(quitButton);
+
+        resultPanel.add(buttonPanel);
+        resultFrame.add(resultPanel);
+        resultFrame.pack();
+        resultFrame.setVisible(true);
+
+        playAgainButton.addActionListener(e -> {
+            resultFrame.dispose();
+            frameBuilder();
+        });
+
+        quitButton.addActionListener(e -> System.exit(0));
+    }
+
+
+
+    private void getNumberOfCars() {
         do {
-          
-        	try {
-        		String input = JOptionPane.showInputDialog(null, "Enter the number of cars to race (2 or 3):");
-        		numCars = Integer.parseInt(input);
-        	}
-          
-        	catch (NumberFormatException ex){
-        		System.out.println("For some reason, what was entered could not be parsed");
-        	}
-           
+            try {
+                JPanel panel = new JPanel(new BorderLayout());
+                JPanel inputPanel = new JPanel();
+                inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+
+                JTextField textField = new JTextField(5);
+                inputPanel.add(new JLabel("Enter the number of cars to race (2 or 3):"));
+                inputPanel.add(textField);
+
+                panel.add(inputPanel, BorderLayout.CENTER);
+
+                JButton quitButton = new JButton("Quit");
+                panel.add(quitButton, BorderLayout.SOUTH);
+
+                int result = JOptionPane.showOptionDialog(
+                        null,
+                        panel,
+                        "Number of Cars",
+                        JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        new Object[]{"Create"},
+                        null
+                );
+
+                if (result == JOptionPane.CLOSED_OPTION || result == JOptionPane.CANCEL_OPTION) {
+                    System.exit(0);
+                }
+
+                numCars = Integer.parseInt(textField.getText());
+
+            } catch (NumberFormatException ex) {
+                System.out.println("For some reason, what was entered could not be parsed");
+            }
         } while (numCars < 2 || numCars > 3);
 
-        Car[] cars = new Car[numCars];
+    }
 
-        JPanel panel = new JPanel(new GridLayout(numCars + 1, 1));
+
+    private Car[] getCarConfigurations() {
+        int carInd = numCars ;
+        Car[] cars = new Car[carInd];
+
+        JPanel panel = new JPanel(new GridLayout(carInd + 1, 1));
 
         String[] colors = {"blue", "green", "yellow"};
         String[] tireTypes = {"summer", "winter", "sport"};
         String[] engines = {"4 cyl", "V6", "V8"};
         Integer[] wheelSizes = {15, 17, 20};
 
-        JComboBox[][] configs = new JComboBox[numCars][4];
+        JComboBox[][] configs = new JComboBox[carInd][4];
 
-        for (int i = 0; i < numCars; i++) {
+        for (int i = 0; i < carInd; i++) {
             JPanel carPanel = new JPanel();
             carPanel.add(new JLabel("Car " + (i + 1) + ": "));
 
@@ -147,15 +207,15 @@ public class RaceGUI {
             panel.add(carPanel);
         }
 
-        JButton startButton = new JButton("Start Race");
-        panel.add(startButton);
+        JButton confirmChoice = new JButton("Confirm Choice");
+        panel.add(confirmChoice);
 
         JOptionPane optionPane = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
         JDialog dialog = optionPane.createDialog("Configure Cars");
-        startButton.addActionListener(e -> dialog.dispose());
+        confirmChoice.addActionListener(e -> dialog.dispose());
         dialog.setVisible(true);
 
-        for (int i = 0; i < numCars; i++) {
+        for (int i = 0; i < carInd; i++) {
             String color = (String) configs[i][0].getSelectedItem();
             String engine = (String) configs[i][1].getSelectedItem();
             String tireType = (String) configs[i][2].getSelectedItem();
@@ -165,10 +225,6 @@ public class RaceGUI {
 
         return cars;
     }
-
-
-
-	
 }
 
 
