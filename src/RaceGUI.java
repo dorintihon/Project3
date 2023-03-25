@@ -120,26 +120,42 @@ public class RaceGUI {
         do {
             try {
                 JPanel panel = new JPanel(new BorderLayout());
+                JLabel welcomeLabel = new JLabel("Welcome to the Car Race!", SwingConstants.CENTER);
+                welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
+                panel.add(welcomeLabel, BorderLayout.NORTH);
+
+
+                ImageIcon imageIcon = new ImageIcon("resources/logo.png");
+                JLabel imageLabel = new JLabel(imageIcon);
+                imageLabel.setPreferredSize(new Dimension(200, 200)); // Adjust the width and height as needed
+                panel.add(imageLabel, BorderLayout.CENTER);
+
                 JPanel inputPanel = new JPanel();
                 inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
 
-                JTextField textField = new JTextField(5);
+                JTextField textField = new JTextField();
                 inputPanel.add(new JLabel("Enter the number of cars to race (2 or 3):"));
                 inputPanel.add(textField);
 
-                panel.add(inputPanel, BorderLayout.CENTER);
+                panel.add(inputPanel, BorderLayout.SOUTH);
 
                 JButton quitButton = new JButton("Quit");
-                panel.add(quitButton, BorderLayout.SOUTH);
+                quitButton.addActionListener(e -> System.exit(0));
+
+                JPanel buttonPanel = new JPanel();
+                buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+                buttonPanel.add(quitButton);
+
+
 
                 int result = JOptionPane.showOptionDialog(
                         null,
                         panel,
-                        "Number of Cars",
+                        "Car Race",
                         JOptionPane.OK_CANCEL_OPTION,
                         JOptionPane.PLAIN_MESSAGE,
                         null,
-                        new Object[]{"Create"},
+                        new Object[]{"Create", buttonPanel},
                         null
                 );
 
@@ -153,7 +169,6 @@ public class RaceGUI {
                 System.out.println("For some reason, what was entered could not be parsed");
             }
         } while (numCars < 2 || numCars > 3);
-
     }
 
 
