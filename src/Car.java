@@ -140,18 +140,25 @@ class Car {
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         switch (color) {
-            case "blue": g2d.drawImage(new ImageIcon("resources/blue_car.png").getImage(), x, y, 50, 50, null);
-            case "green": g2d.drawImage(new ImageIcon("resources/green_car.png").getImage(), x, y, 50, 50, null);
-            case "yellow": g2d.drawImage(new ImageIcon("resources/yellow_car.png").getImage(), x, y, 50, 50, null);
-            default: g.setColor(Color.YELLOW);
+            case "blue":
+                g2d.drawImage(new ImageIcon("resources/blue_car.png").getImage(), x, y, 50, 50, null);
+                break;
+            case "green":
+                g2d.drawImage(new ImageIcon("resources/green_car.png").getImage(), x, y, 50, 50, null);
+                break;
+            case "yellow":
+                g2d.drawImage(new ImageIcon("resources/yellow_car.png").getImage(), x, y, 50, 50, null);
+                break;
+            default:
+                g.setColor(Color.YELLOW);
         }
-
     }
-    
+
+
     @Override
     public String toString() {
     	String info = "";
-    	info = info + "This car is " + color + " and has a " + engine + " engine with " + tireType + " tires.";
+    	info = info + "This car is " + color + " and has a " + engine + " engine with " + tireType + " tires and " + wheelSize + " wheel size\n";
     	return info;
     }
 
