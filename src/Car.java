@@ -147,6 +147,13 @@ class Car {
         }
 
     }
+    
+    @Override
+    public String toString() {
+    	String info = "";
+    	info = info + "This car is " + color + " and has a " + engine + " engine with " + tireType + " tires.";
+    	return info;
+    }
 
     @Override
     public boolean equals(Object obj) {
