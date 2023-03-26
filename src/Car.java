@@ -144,7 +144,7 @@ class Car {
                 g2d.drawImage(new ImageIcon("resources/blue_car.png").getImage(), x, y, 50, 50, null);
                 break;
             case "green":
-                g2d.drawImage(new ImageIcon("resources/green_car.png").getImage(), x, y, 50, 50, null);
+                g2d.drawImage(new ImageIcon("resources/green_car.gif").getImage(), x, y-50, 100, 100, null);
                 break;
             case "yellow":
                 g2d.drawImage(new ImageIcon("resources/yellow_car.png").getImage(), x, y, 50, 50, null);
