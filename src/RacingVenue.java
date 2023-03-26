@@ -1,3 +1,4 @@
+//Dorin and Dov
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,8 +8,8 @@ class RacingVenue extends JPanel {
 	private Car[] cars;
 	private Checkpoint[] checkpoints;
 
-
-	public RacingVenue(Car[] carConfigurations, RaceGUI gui) {
+	//Dorin, edited by Dov
+	public RacingVenue(Car[] carConfigurations) {
 		this.cars = carConfigurations;
 		
 		this.checkpoints = new Checkpoint[cars.length];
@@ -16,8 +17,9 @@ class RacingVenue extends JPanel {
 		for (int i = 0; i < cars.length; i++) {
 			checkpoints[i] = new Checkpoint(0, cars[i].getY(), 600, cars[i].getY());
 		}
-		
-		setPreferredSize(new Dimension(700, 400));
+
+		int height = cars.length * 150; // calculate the required height based on the number of cars
+		setPreferredSize(new Dimension(700, height));
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 	}
 	
@@ -30,15 +32,16 @@ class RacingVenue extends JPanel {
 	    
 		repaint();
 	}
-	
+	//Dov
 	public Car[] getCars() {
 		return cars;
 	}
-	
+	//Dov
 	public Checkpoint[] getCheckpoints() {
 		return checkpoints;
 	}
-
+	
+	//Dorin
 	public boolean allCarsFinished() {
 		for (Car car : cars) {
 			if (!car.isFinished()) {
@@ -49,7 +52,7 @@ class RacingVenue extends JPanel {
 	}
 	
 
-
+	//Dorin
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -61,6 +64,7 @@ class RacingVenue extends JPanel {
 		}
 	}
 	
+	//Dov
 	@Override
 	public String toString() {
 		String info = "";
@@ -69,6 +73,7 @@ class RacingVenue extends JPanel {
 		return info;
 	}
 	
+	//Dov
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == this) return true;

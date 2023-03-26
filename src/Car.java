@@ -1,19 +1,24 @@
+// AJ, Dorin, Dov (just a little)
 import javax.swing.*;
 import java.awt.*;
 
 class Car {
     private int x;
     private int y;
+
+    private int WIDTH = 125;
+    private int HEIGHT = 125;
     private String color;
     private String tireType;
 
     private String engine;
     private int wheelSize;
-    private int speed = 15;
+    private int speed = 10;
 
     private boolean finished;
     private long finishTime;
-
+    
+    //AJ
     public Car(String color, String engine, String tireType, int wheelSize, int x, int y) {
         this.color = color;
         this.engine = engine;
@@ -28,36 +33,40 @@ class Car {
         this.speed -= speedReductionByEngine() + speedReductionByTyre() + speedReductionByWheel();
     }
 
-
+    
+    //AJ + Dorin
     public int speedReductionByEngine(){
         	switch (engine) {
-            case "4 cyl": return 4;
+            case "4 cyl": return 3;
             case "V6": return 2;
             case "V8": return 1;
             default: return 0;
         }
-        
-       
-    }
 
+
+    }
+    
+    //AJ + Dorin
     public int speedReductionByWheel(){
         switch (wheelSize) {
-            case 20: return 4;
+            case 20: return 3;
             case 17: return 2;
             case 15: return 1;
             default: return 0;
         }
     }
-
+    
+    //AJ + Dorin
     public int speedReductionByTyre(){
          switch (tireType) {
-            case "winter": return 4;
+            case "winter": return 3;
             case "summer": return 2;
             case "sport": return 1;
             default: return 0;
         }
     }
-
+    
+    //Dorin
     public void move(Checkpoint checkpoint, long startTime) {
         if (!finished) {
             if (x < checkpoint.getEndX() + 10) {
@@ -67,94 +76,107 @@ class Car {
             }
         }
     }
-
+    
+    //AJ
     public boolean isFinished() {
         return finished;
     }
-
+    
+  //AJ
     public void setFinished(boolean finished) {
         this.finished = finished;
     }
-
+  //AJ
     public long getFinishTime() {
         return finishTime;
     }
-
+  //AJ
     public void setFinishTime(long finishTime) {
         this.finishTime = finishTime;
     }
-
+  //Dorin
     public void finish(long startTime) {
         this.finished = true;
         this.finishTime = System.currentTimeMillis() - startTime;
     }
-
+  //AJ from here to comment below
     public int getX() {
         return x;
     }
-
+  
     public void setX(int x) {
         this.x = x;
     }
-
+  
     public int getY() {
         return y;
     }
-
+  
     public void setY(int y) {
         this.y = y;
     }
-
+  
     public String getColor() {
         return color;
     }
-
+  
     public void setColor(String color) {
         this.color = color;
     }
-
+  
     public String getTireType() {
         return tireType;
     }
-
+  
     public void setTireType(String tireType) {
         this.tireType = tireType;
     }
-
+  
     public int getWheelSize() {
         return wheelSize;
     }
-
+  
     public void setWheelSize(int wheelSize) {
         this.wheelSize = wheelSize;
     }
-
+  
     public int getSpeed() {
         return speed;
     }
-
+  
     public void setSpeed(int speed) {
         this.speed = speed;
     }
-
+//end AJ, draw() made by Dorin
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         switch (color) {
-            case "blue": g2d.drawImage(new ImageIcon("resources/blue_car.png").getImage(), x, y, 50, 50, null);
-            case "green": g2d.drawImage(new ImageIcon("resources/green_car.png").getImage(), x, y, 50, 50, null);
-            case "yellow": g2d.drawImage(new ImageIcon("resources/yellow_car.png").getImage(), x, y, 50, 50, null);
-            default: g.setColor(Color.YELLOW);
+            case "blue":
+                g2d.drawImage(new ImageIcon("resources/blue_car.gif").getImage(), x, y-50, WIDTH, HEIGHT, null);
+                break;
+            case "green":
+                g2d.drawImage(new ImageIcon("resources/green_car.gif").getImage(), x, y-50, WIDTH, HEIGHT, null);
+                break;
+            case "yellow":
+                g2d.drawImage(new ImageIcon("resources/yellow_car.gif").getImage(), x, y-50, WIDTH, HEIGHT, null);
+                break;
+            case "pink":
+                g2d.drawImage(new ImageIcon("resources/pink_car.gif").getImage(), x, y-50, WIDTH, HEIGHT, null);
+                break;
+            default:
+                g2d.drawImage(new ImageIcon("resources/gray_car.gif").getImage(), x, y-50, WIDTH, HEIGHT, null);
         }
-
     }
-    
+
+
+    //Dov
     @Override
     public String toString() {
     	String info = "";
-    	info = info + "This car is " + color + " and has a " + engine + " engine with " + tireType + " tires.";
+    	info = info + "This car is " + color + " and has a " + engine + " engine with " + tireType + " tires and " + wheelSize + " wheel size\n";
     	return info;
     }
-
+//Dov
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

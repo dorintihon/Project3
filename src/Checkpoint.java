@@ -1,3 +1,4 @@
+//Dorin with toString and equals made by Dov
 import javax.swing.*;
 import java.awt.*;
 
