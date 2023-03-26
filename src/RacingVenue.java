@@ -2,6 +2,12 @@
 import javax.swing.*;
 import java.awt.*;
 
+/*
+ * RacingVenue handles Cars as a group as well as attaching each car to a checkpoint so that it knows when to stop.
+ * This class provides methods that RaceGUI uses to run the race and display the results, as well as being responsible
+ * for drawing the cars and checkpoints.
+ */
+
 class RacingVenue extends JPanel {
 
 

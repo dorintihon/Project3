@@ -1,4 +1,9 @@
 //Dorin, Dov did some edits/debugging related to restart logic
+/*
+ * RaceGUI handles all GUI related things as well as running the race itself through the methods in RacingVenue. 
+ * It provides the logic for car customization, starting the race, and restarting the game. It takes input from the user through
+ * JButtons and JComboBoxes.
+ */
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;

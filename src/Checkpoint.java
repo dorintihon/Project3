@@ -2,6 +2,11 @@
 import javax.swing.*;
 import java.awt.*;
 
+/*
+ * The Checkpoint class tracks the location of Checkpoints in the race, and provides a draw method for RacingVenue to call.
+ * It allows the Cars to know when they should stop and provides a visual finish line for the user.
+ */
+
 class Checkpoint {
     private int startX;
     private int startY;

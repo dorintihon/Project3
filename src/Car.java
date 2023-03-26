@@ -1,6 +1,12 @@
 // AJ, Dorin, Dov (just a little)
 import javax.swing.*;
 import java.awt.*;
+/*
+ * The Car class handles all information related to displaying Cars and their speed in the race. It provides
+ * methods for calculating a Car's speed based on its engine and tires, as well as providing a draw method for
+ * RacingVenue to call to display the Cars. It also keeps track of the Car's x/y coordinates so that RacingVenue knows
+ * when the race has ended and RaceGUI knows when to display the race results.
+ */
 
 class Car {
     private int x;
