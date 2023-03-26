@@ -4,12 +4,15 @@ import java.awt.*;
 class Car {
     private int x;
     private int y;
+
+    private int WIDTH = 125;
+    private int HEIGHT = 125;
     private String color;
     private String tireType;
 
     private String engine;
     private int wheelSize;
-    private int speed = 15;
+    private int speed = 10;
 
     private boolean finished;
     private long finishTime;
@@ -31,7 +34,7 @@ class Car {
 
     public int speedReductionByEngine(){
         	switch (engine) {
-            case "4 cyl": return 4;
+            case "4 cyl": return 3;
             case "V6": return 2;
             case "V8": return 1;
             default: return 0;
@@ -42,7 +45,7 @@ class Car {
 
     public int speedReductionByWheel(){
         switch (wheelSize) {
-            case 20: return 4;
+            case 20: return 3;
             case 17: return 2;
             case 15: return 1;
             default: return 0;
@@ -51,7 +54,7 @@ class Car {
 
     public int speedReductionByTyre(){
          switch (tireType) {
-            case "winter": return 4;
+            case "winter": return 3;
             case "summer": return 2;
             case "sport": return 1;
             default: return 0;
@@ -141,16 +144,19 @@ class Car {
         Graphics2D g2d = (Graphics2D) g;
         switch (color) {
             case "blue":
-                g2d.drawImage(new ImageIcon("resources/blue_car.png").getImage(), x, y, 50, 50, null);
+                g2d.drawImage(new ImageIcon("resources/blue_car.gif").getImage(), x, y-50, WIDTH, HEIGHT, null);
                 break;
             case "green":
-                g2d.drawImage(new ImageIcon("resources/green_car.gif").getImage(), x, y-50, 100, 100, null);
+                g2d.drawImage(new ImageIcon("resources/green_car.gif").getImage(), x, y-50, WIDTH, HEIGHT, null);
                 break;
             case "yellow":
-                g2d.drawImage(new ImageIcon("resources/yellow_car.png").getImage(), x, y, 50, 50, null);
+                g2d.drawImage(new ImageIcon("resources/yellow_car.gif").getImage(), x, y-50, WIDTH, HEIGHT, null);
+                break;
+            case "pink":
+                g2d.drawImage(new ImageIcon("resources/pink_car.gif").getImage(), x, y-50, WIDTH, HEIGHT, null);
                 break;
             default:
-                g.setColor(Color.YELLOW);
+                g2d.drawImage(new ImageIcon("resources/gray_car.gif").getImage(), x, y-50, WIDTH, HEIGHT, null);
         }
     }
 
