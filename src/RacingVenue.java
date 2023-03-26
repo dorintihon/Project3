@@ -16,8 +16,9 @@ class RacingVenue extends JPanel {
 		for (int i = 0; i < cars.length; i++) {
 			checkpoints[i] = new Checkpoint(0, cars[i].getY(), 600, cars[i].getY());
 		}
-		
-		setPreferredSize(new Dimension(700, 400));
+
+		int height = cars.length * 150; // calculate the required height based on the number of cars
+		setPreferredSize(new Dimension(700, height));
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 	}
 	
