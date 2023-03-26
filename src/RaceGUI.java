@@ -81,14 +81,14 @@ public class RaceGUI {
         for (int i = 0; i < venue.getCars().length; i++) {
             long timeTaken = venue.getCars()[i].getFinishTime();
             double timeTakenSeconds = timeTaken / 1000.0;
-            results.append("Car ").append(venue.getCars()[i].getColor()).append(": ").append(timeTakenSeconds).append(" s\n");
+            results.append("Car [").append(winningIndex + 1).append("] : ").append(timeTakenSeconds).append(" s\n");
             if (timeTaken < bestTime) {
                 winningIndex = i;
                 bestTime = timeTaken;
             }
         }
 
-        results.append("The winner is Car ").append(venue.getCars()[winningIndex].getColor()).append("!\n");
+        results.append("The winner is Car [").append(winningIndex + 1).append("] !\n");
         results.append(venue.getCars()[winningIndex].toString());
 
 
@@ -145,9 +145,9 @@ public class RaceGUI {
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
 
-        JTextField textField = new JTextField();
-        inputPanel.add(new JLabel("Enter the number of cars to race (2 or 3):"));
-        inputPanel.add(textField);
+        inputPanel.add(new JLabel("Choose the number of cars to race:"));
+        JComboBox<Integer> numberBox = new JComboBox<>(new Integer[]{1, 2, 3, 4});
+        inputPanel.add(numberBox);
 
         panel.add(inputPanel, BorderLayout.CENTER);
 
@@ -166,17 +166,11 @@ public class RaceGUI {
         inputFrame.setVisible(true);
 
         createButton.addActionListener(e -> {
-            try {
-                numCars = Integer.parseInt(textField.getText());
-                if (numCars >= 2 && numCars <= 3) {
-                    inputFrame.dispose();
-                    carConfigurations = getCarConfigPanel();
-                } else {
-                    JOptionPane.showMessageDialog(inputFrame, "Please enter a valid number of cars (2 or 3).", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(inputFrame, "Invalid input. Please enter a number.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+
+                numCars = (int) numberBox.getSelectedItem();;
+                inputFrame.dispose();
+                carConfigurations = getCarConfigPanel();
+
         });
 
         quitButton.addActionListener(e -> System.exit(0));
@@ -193,7 +187,7 @@ public class RaceGUI {
 
         JPanel panel = new JPanel(new GridLayout(carInd + 1, 1));
 
-        String[] colors = {"blue", "green", "yellow"};
+        String[] colors = {"blue", "green", "yellow", "pink"};
         String[] tireTypes = {"summer", "winter", "sport"};
         String[] engines = {"4 cyl", "V6", "V8"};
         Integer[] wheelSizes = {15, 17, 20};
