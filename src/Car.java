@@ -1,4 +1,8 @@
+
 // AJ, Dorin, Dov (just a little)
+
+// 3/9 - updated class with proper attributes, accessors, and mutators [AJ]
+
 import javax.swing.*;
 import java.awt.*;
 /*
@@ -49,7 +53,6 @@ class Car {
             default: return 0;
         }
 
-
     }
     
     //AJ + Dorin
@@ -99,6 +102,72 @@ class Car {
   //AJ
     public void setFinishTime(long finishTime) {
         this.finishTime = finishTime;
+      
+    // constructor with no args
+    public Car(){
+        this.startPoint = null;
+        this.endPoint = null;
+        this.engine = 0;
+        this.tire = 0;
+        this.wheel = 0;
+        this.color = null;
+        this.speed = 0;
+        this.power = 0;
+        this.positionX = 0;
+        this.positionY = 0;
+    }
+
+    // constructor with args
+    public Car(Checkpoint sta, Checkpoint end, int e, int t, int w, Color color, double sp, int p, int x, int y) {
+        this.startPoint = sta;
+        this.endPoint = end;
+        this.engine = e;
+        this.tire = t;
+        this.wheel = w;
+        this.color = color;
+        this.speed = sp;
+        this.power = p;
+        this.positionX = x;
+        this.positionY = y;
+    }
+
+    //  Accessors
+    public Checkpoint getStartPoint(){
+        return this.startPoint;
+    }
+    public Checkpoint getEndPoint(){
+        return this.endPoint;
+    }
+    public int getEngine(){
+        return this.engine;
+    }
+    public int getTire(){
+        return this.tire;
+    }
+    public int getWheel(){
+        return this.wheel;
+    }
+    public Color getColor(){
+        return this.color;
+    }
+    public double getSpeed(){
+        return this.speed;
+    }
+    public int getPower(){
+        return this.power;
+    }
+    public int getPositionX(){
+        return this.positionX;
+    }
+    public int getPositionY(){
+        return this.positionY;
+    }
+
+
+
+    public RacingVenue getCircle() {
+        return circle;
+
     }
   //Dorin
     public void finish(long startTime) {
@@ -149,7 +218,7 @@ class Car {
     public int getSpeed() {
         return speed;
     }
-  
+
     public void setSpeed(int speed) {
         this.speed = speed;
     }
@@ -175,7 +244,6 @@ class Car {
     }
 
 
-    //Dov
     @Override
     public String toString() {
     	String info = "";
@@ -197,4 +265,5 @@ class Car {
                 color.equals(car.color) &&
                 tireType.equals(car.tireType);
     }
+
 }
