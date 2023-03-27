@@ -1,75 +1,85 @@
+import javax.swing.*;
 import java.awt.*;
 
-import javax.swing.JComponent;
+class RacingVenue extends JPanel {
 
-public class RacingVenue extends JComponent{
-
-	private int x;
-	private int y;
-	private int radius;
 
 	private Car[] cars;
 	private Checkpoint[] checkpoints;
 
-	public RacingVenue(int centerx, int centery, int radius) {
 
-		this.x = centerx;
-		this.y = centery;
-		this.radius = radius;
+	public RacingVenue(Car[] carConfigurations, RaceGUI gui) {
+		this.cars = carConfigurations;
+		
+		this.checkpoints = new Checkpoint[cars.length];
+		
+		for (int i = 0; i < cars.length; i++) {
+			checkpoints[i] = new Checkpoint(0, cars[i].getY(), 600, cars[i].getY());
+		}
 
-		this.makeTrack();
-
+		int height = cars.length * 150; // calculate the required height based on the number of cars
+		setPreferredSize(new Dimension(700, height));
+		setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 	}
-
-	private void makeTrack() {
-
-		generateCheckpoints(3);
+	
+	public void moveRace(long startTime) {
+		
+		for (int i = 0; i < cars.length; i++) {
+			
+			cars[i].move(checkpoints[i], startTime);
+		}
+	    
+		repaint();
 	}
-
-
-	public Car[] generateCars(int numCars) {
-		//placeholder, will build an array and return it, then the cars attribute will be set equal to the returned array
+	
+	public Car[] getCars() {
 		return cars;
 	}
-
-	public Checkpoint[] generateCheckpoints(int numPoints) {
-
-		int checkpointDistance = (int) (2 * Math.PI * radius / numPoints);
-
-		checkpoints = new Checkpoint[numPoints];
-		for (int i = 0; i < numPoints; i++) {
-			int checkpointX = x + (int) (radius * Math.cos(i * checkpointDistance / radius));
-			int checkpointY = y + (int) (radius * Math.sin(i * checkpointDistance / radius));
-			checkpoints[i] = new Checkpoint(checkpointX, checkpointY, 15, 15);
-		}
+	
+	public Checkpoint[] getCheckpoints() {
 		return checkpoints;
 	}
 
-	public boolean isGameOver() {
-		for(int i = 0; i < checkpoints.length; i++) {
-			//if NOT checkpoints[i].hasCar() return false
+	public boolean allCarsFinished() {
+		for (Car car : cars) {
+			if (!car.isFinished()) {
+				return false;
+			}
 		}
-		//if got through loop without triggering a return, all cars have arrived
 		return true;
 	}
+	
 
-	public int getXCoord() {
-		return x;
-	}
-
-	public int getYCoord() {
-		return y;
-	}
-
-	public int getRadius() {
-		return radius;
-	}
 
 	@Override
-	public void paintComponent(Graphics g) {
-		g.drawOval(x - radius, y - radius, radius * 2, radius * 2);
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		for (Car car : cars) {
+			car.draw(g);
+		}
 		for (Checkpoint checkpoint : checkpoints) {
 			checkpoint.draw(g);
 		}
+	}
+	
+	@Override
+	public String toString() {
+		String info = "";
+		info = info + "This track has " + cars.length + " cars";
+		
+		return info;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == this) return true;
+		if(obj == null) return false;
+		
+		if(obj instanceof RacingVenue) {
+			RacingVenue ven = (RacingVenue) obj;
+			
+			return ven.getCars() == this.getCars() && ven.getCheckpoints() == this.getCheckpoints();
+		}
+		return false;
 	}
 }

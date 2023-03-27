@@ -3,23 +3,90 @@ import javax.swing.*;
 import java.awt.*;
 
 class Car {
+    private int x;
+    private int y;
+
+    private int WIDTH = 125;
+    private int HEIGHT = 125;
+    private String color;
+    private String tireType;
+
+    private String engine;
+    private int wheelSize;
+    private int speed = 10;
+
+    private boolean finished;
+    private long finishTime;
+
+    public Car(String color, String engine, String tireType, int wheelSize, int x, int y) {
+        this.color = color;
+        this.engine = engine;
+        this.tireType = tireType;
+        this.wheelSize = wheelSize;
+        this.x = x;
+        this.y = y;
+
+        this.finished = false;
+        this.finishTime = 0;
+
+        this.speed -= speedReductionByEngine() + speedReductionByTyre() + speedReductionByWheel();
+    }
 
 
-    private final int WIDTH = 40;
-    private final int HEIGHT = 20;
-    private Checkpoint startPoint;
-    private Checkpoint endPoint;
-    private int engine;
-    private int tire;
-    private int wheel;
-    private Color color;
-    private double speed = 0.0;
-    private int power;
-    private int positionX;
-    private int positionY;
+    public int speedReductionByEngine(){
+        	switch (engine) {
+            case "4 cyl": return 3;
+            case "V6": return 2;
+            case "V8": return 1;
+            default: return 0;
+        }
 
-    Image carImg = new ImageIcon("resources/car1.png").getImage();
 
+    }
+
+    public int speedReductionByWheel(){
+        switch (wheelSize) {
+            case 20: return 3;
+            case 17: return 2;
+            case 15: return 1;
+            default: return 0;
+        }
+    }
+
+    public int speedReductionByTyre(){
+         switch (tireType) {
+            case "winter": return 3;
+            case "summer": return 2;
+            case "sport": return 1;
+            default: return 0;
+        }
+    }
+
+    public void move(Checkpoint checkpoint, long startTime) {
+        if (!finished) {
+            if (x < checkpoint.getEndX() + 10) {
+                x += speed;
+            } else {
+                finish(startTime);
+            }
+        }
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    public long getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(long finishTime) {
+        this.finishTime = finishTime;
+      
     // constructor with no args
     public Car(){
         this.startPoint = null;
@@ -84,49 +151,104 @@ class Car {
 
     public RacingVenue getCircle() {
         return circle;
+
     }
 
-    public void setCircle(RacingVenue circle) {
-        this.circle = circle;
+    public void finish(long startTime) {
+        this.finished = true;
+        this.finishTime = System.currentTimeMillis() - startTime;
     }
 
-    public Color getColor() {
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public String getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(String color) {
         this.color = color;
     }
 
-    public double getSpeed() {
+    public String getTireType() {
+        return tireType;
+    }
+
+    public void setTireType(String tireType) {
+        this.tireType = tireType;
+    }
+
+    public int getWheelSize() {
+        return wheelSize;
+    }
+
+    public void setWheelSize(int wheelSize) {
+        this.wheelSize = wheelSize;
+    }
+
+    public int getSpeed() {
         return speed;
     }
 
-    public void setSpeed(double speed) {
+
+    public void setSpeed(int speed) {
         this.speed = speed;
     }
 
-    public int getWIDTH() {
-        return WIDTH;
-    }
-
-    public int getHEIGHT() {
-        return HEIGHT;
-    }
-
-    public void move(double speed) {
-        this.speed += speed;
-    }
-
-
     public void draw(Graphics g) {
-        int x = (int) (circle.getXCoord() + circle.getRadius() * Math.cos(speed)) - WIDTH/2;
-        int y = (int) (circle.getYCoord() + circle.getRadius() * Math.sin(speed)) - HEIGHT/2;
-
         Graphics2D g2d = (Graphics2D) g;
-        g2d.rotate(speed, x + WIDTH/2, y + HEIGHT/2);
-        g2d.drawImage(carImg, x-15, y, WIDTH+25, HEIGHT+50, null);
-        g2d.rotate(-speed, x + WIDTH/2, y + HEIGHT/2);
+        switch (color) {
+            case "blue":
+                g2d.drawImage(new ImageIcon("resources/blue_car.gif").getImage(), x, y-50, WIDTH, HEIGHT, null);
+                break;
+            case "green":
+                g2d.drawImage(new ImageIcon("resources/green_car.gif").getImage(), x, y-50, WIDTH, HEIGHT, null);
+                break;
+            case "yellow":
+                g2d.drawImage(new ImageIcon("resources/yellow_car.gif").getImage(), x, y-50, WIDTH, HEIGHT, null);
+                break;
+            case "pink":
+                g2d.drawImage(new ImageIcon("resources/pink_car.gif").getImage(), x, y-50, WIDTH, HEIGHT, null);
+                break;
+            default:
+                g2d.drawImage(new ImageIcon("resources/gray_car.gif").getImage(), x, y-50, WIDTH, HEIGHT, null);
+        }
+    }
+
+
+    @Override
+    public String toString() {
+    	String info = "";
+    	info = info + "This car is " + color + " and has a " + engine + " engine with " + tireType + " tires and " + wheelSize + " wheel size\n";
+    	return info;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Car car = (Car) obj;
+        return wheelSize == car.wheelSize &&
+                engine.equals(car.engine) &&
+                color.equals(car.color) &&
+                tireType.equals(car.tireType);
     }
 
 }

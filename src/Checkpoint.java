@@ -1,33 +1,57 @@
 
+import javax.swing.*;
+import java.awt.*;
+
+
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Checkpoint {
 
-    private int x;
-    private int y;
-    private int width;
-    private int height;
-    private boolean hasCar;
+class Checkpoint {
+    private int startX;
+    private int startY;
+    private int endX;
+    private int endY;
 
-    public Checkpoint(int x, int y, int width, int height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.hasCar = false;
+    public Checkpoint(int startX, int startY, int endX, int endY) {
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
+    }
+
+    public int getEndX() {
+        return endX;
     }
 
     public void draw(Graphics g) {
-       g.setColor(Color.RED);
-        g.fillRect(x-5, y, width, height);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(new ImageIcon("resources/start_flag.png").getImage(), startX, startY - 15, 70, 60, null);
+        g2d.drawImage(new ImageIcon("resources/finish_flag.png").getImage(), endX, endY - 15, 20, 60, null);
+    }
+    
+    @Override
+    public String toString() {
+    	String info = "";
+    	
+    	info = info + "This checkpoint's start is at " + startX + ", " + startY;
+    	info = info + "\n This checkpoint's end is at " + endX + ", " + endY;
+    	
+    	return info;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+    	if(obj == this) return true;
+    	if(obj == null) return false;
+    	
+    	if(obj instanceof Checkpoint) {
+    		Checkpoint ch = (Checkpoint) obj;
+    		
+    		return ch.startX == this.startX && ch.endX == this.endX && ch.startY == this.startY && ch.endY == this.endY;
+    	}
+    	return false;
     }
 
-    public boolean hasCar() {
-        return hasCar;
-    }
-
-    public void setHasCar(boolean hasCar) {
-        this.hasCar = hasCar;
-    }
 }
+
