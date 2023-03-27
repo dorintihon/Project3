@@ -1,5 +1,11 @@
+
 import javax.swing.*;
 import java.awt.*;
+
+
+import java.awt.Color;
+import java.awt.Graphics;
+
 
 class Checkpoint {
     private int startX;
@@ -46,4 +52,6 @@ class Checkpoint {
     	}
     	return false;
     }
+
 }
+
