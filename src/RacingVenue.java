@@ -1,5 +1,12 @@
+//Dorin and Dov
 import javax.swing.*;
 import java.awt.*;
+
+/*
+ * RacingVenue handles Cars as a group as well as attaching each car to a checkpoint so that it knows when to stop.
+ * This class provides methods that RaceGUI uses to run the race and display the results, as well as being responsible
+ * for drawing the cars and checkpoints.
+ */
 
 class RacingVenue extends JPanel {
 
@@ -7,8 +14,8 @@ class RacingVenue extends JPanel {
 	private Car[] cars;
 	private Checkpoint[] checkpoints;
 
-
-	public RacingVenue(Car[] carConfigurations, RaceGUI gui) {
+	//Dorin, edited by Dov
+	public RacingVenue(Car[] carConfigurations) {
 		this.cars = carConfigurations;
 		
 		this.checkpoints = new Checkpoint[cars.length];
@@ -31,15 +38,16 @@ class RacingVenue extends JPanel {
 	    
 		repaint();
 	}
-	
+	//Dov
 	public Car[] getCars() {
 		return cars;
 	}
-	
+	//Dov
 	public Checkpoint[] getCheckpoints() {
 		return checkpoints;
 	}
-
+	
+	//Dorin
 	public boolean allCarsFinished() {
 		for (Car car : cars) {
 			if (!car.isFinished()) {
@@ -50,7 +58,7 @@ class RacingVenue extends JPanel {
 	}
 	
 
-
+	//Dorin
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -62,6 +70,7 @@ class RacingVenue extends JPanel {
 		}
 	}
 	
+	//Dov
 	@Override
 	public String toString() {
 		String info = "";
@@ -70,6 +79,7 @@ class RacingVenue extends JPanel {
 		return info;
 	}
 	
+	//Dov
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == this) return true;

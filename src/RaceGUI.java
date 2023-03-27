@@ -1,10 +1,16 @@
+//Dorin, Dov did some edits/debugging related to restart logic
+/*
+ * RaceGUI handles all GUI related things as well as running the race itself through the methods in RacingVenue. 
+ * It provides the logic for car customization, starting the race, and restarting the game. It takes input from the user through
+ * JButtons and JComboBoxes.
+ */
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
 
 public class RaceGUI {
-
+	//Dov
     public static void main(String[] args) {
         new RaceGUI();
     }
@@ -14,6 +20,120 @@ public class RaceGUI {
     private int numCars;
     private  Car[] carConfigurations;
 
+    
+    //Dov
+    public RaceGUI() {
+        startGame();
+    }
+    
+    //Dorin with minor Dov edits
+    public void getRacingVenue(Car[] carConfigurations) {
+        if (this.frame != null) {
+            this.frame.setVisible(false);
+            this.frame.dispose();
+            venue = null;
+        }
+        venue = new RacingVenue(carConfigurations);
+
+        frame = new JFrame("Car Race");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.add(venue);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (dim.width - frame.getSize().width) / 2;
+        int y = (dim.height - frame.getSize().height) / 2;
+        frame.setLocation(x - 350, y - 250);
+
+        JButton startRaceButton = new JButton("Start Race");
+        startRaceButton.addActionListener(e -> {
+            startRaceButton.setEnabled(false);
+
+            long startTime = System.currentTimeMillis();
+            Timer[] timerHolder = new Timer[1];
+            timerHolder[0] = new Timer(10, i -> {
+
+                venue.moveRace(startTime);
+
+                if (venue.allCarsFinished()) {
+                    timerHolder[0].stop();
+                    displayRaceResults();
+                }
+            });
+            timerHolder[0].start();
+        });
+
+        frame.add(startRaceButton, BorderLayout.SOUTH);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    //Dorin
+    public void displayRaceResults() {
+        JFrame resultFrame = new JFrame("Race Results");
+        JPanel resultPanel = new JPanel(new BorderLayout());
+        resultFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (dim.width - frame.getSize().width) / 2;
+        int y = (dim.height - frame.getSize().height) / 2;
+        resultFrame.setLocation(x+150, y+150); // set the location of the frame to the center of the screen
+
+
+        JLabel finishLabel = new JLabel("Race results!", SwingConstants.CENTER);
+        finishLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        resultPanel.add(finishLabel, BorderLayout.NORTH);
+
+        StringBuilder results = new StringBuilder();
+        int winningIndex = 0;
+        long bestTime = venue.getCars()[0].getFinishTime();
+
+        for (int i = 0; i < venue.getCars().length; i++) {
+            long timeTaken = venue.getCars()[i].getFinishTime();
+            double timeTakenSeconds = timeTaken / 1000.0;
+            results.append("Car [").append(winningIndex + 1).append("] : ").append(timeTakenSeconds).append(" s\n");
+            if (timeTaken < bestTime) {
+                winningIndex = i;
+                bestTime = timeTaken;
+            }
+        }
+
+        results.append("The winner is Car [").append(winningIndex + 1).append("] !\n");
+        results.append(venue.getCars()[winningIndex].toString());
+
+
+        JTextArea resultsTextArea = new JTextArea(results.toString());
+        resultsTextArea.setEditable(false);
+        resultPanel.add(resultsTextArea, BorderLayout.CENTER);
+
+        JPanel playAgainPanel = new JPanel(new BorderLayout());
+        JLabel playAgainLabel = new JLabel("Do you want to play again?", SwingConstants.CENTER);
+
+        playAgainPanel.add(playAgainLabel, BorderLayout.CENTER);
+
+        JButton playAgainButton = new JButton("Play Again");
+        JButton quitButton = new JButton("Quit");
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(playAgainButton);
+        buttonPanel.add(quitButton);
+
+        playAgainPanel.add(buttonPanel, BorderLayout.SOUTH);
+        resultPanel.add(playAgainPanel, BorderLayout.SOUTH);
+        resultFrame.add(resultPanel);
+        resultFrame.pack();
+        resultFrame.setVisible(true);
+
+        playAgainButton.addActionListener(e -> {
+            resultFrame.dispose();
+            frame.dispose();
+            startGame();
+        });
+
+        quitButton.addActionListener(e -> System.exit(0));
+    }
+
+
+    //Dorin
     public RaceGUI() {
         startGame();
     }
@@ -125,6 +245,7 @@ public class RaceGUI {
 
 
 
+
     private void startGame() {
         JFrame inputFrame = new JFrame("Car Race");
         inputFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -177,6 +298,8 @@ public class RaceGUI {
     }
 
 
+
+    //Dorin
 
     private Car[] getCarConfigPanel() {
         int carInd = numCars ;
